@@ -1,0 +1,89 @@
+{
+  "dataset": "Ausgrid Solar Home Electricity Data 2012-2013",
+  "kind": "real_public_data",
+  "source": "https://www.ausgrid.com.au/Industry/Our-Research/Data-to-share/Solar-home-electricity-data",
+  "mirror": "https://raw.githubusercontent.com/rockey-abhishek/Ausgrid-Dataset/main/Data.zip",
+  "archive_sha256": "7ec04dbe64700d3e69a6d5b0b501ef1a9f8bd503cfc4a1050630f99c2dbcf7b8",
+  "archive_bytes": 14618329,
+  "csv_member": "RawData/2012-2013 Solar home electricity data v2.csv",
+  "target": "GC only: general consumption; excludes CL and GG",
+  "unit": "kWh per hour",
+  "start": "2012-07-01T00:00:00",
+  "end_exclusive": "2013-07-01T00:00:00",
+  "time_convention": "Source local-clock 48-slot days; adjacent half-hour ENERGY values summed. Hour labels are interval starts; no UTC/DST conversion.",
+  "selection": "First numerically ordered complete, finite, nonnegative GC households with blank (actual) Row Quality; not random or representative.",
+  "missing": "Incomplete households excluded; no interpolation or future-data imputation.",
+  "clients": [
+    {
+      "id": 1,
+      "file": "home_001.npz",
+      "hours": 8760,
+      "bytes": 19455,
+      "sha256": "275fb1f37eb514078f222bdefc269a932345802b85795775da7919adef612686"
+    },
+    {
+      "id": 3,
+      "file": "home_003.npz",
+      "hours": 8760,
+      "bytes": 15376,
+      "sha256": "237f0f255ed1b6f80c2b734f446d97d346e405855573d6936269d268950f74a7"
+    },
+    {
+      "id": 4,
+      "file": "home_004.npz",
+      "hours": 8760,
+      "bytes": 16911,
+      "sha256": "9b608dfb86ddf98d4ca17292eb15da38af4b03c6c2a51f62de380284c270792d"
+    },
+    {
+      "id": 5,
+      "file": "home_005.npz",
+      "hours": 8760,
+      "bytes": 18018,
+      "sha256": "ffd480ab0aba1a033bee8fc6d0a2aa8fd66af1b9bfb1be3ca8319a544d970061"
+    },
+    {
+      "id": 6,
+      "file": "home_006.npz",
+      "hours": 8760,
+      "bytes": 20218,
+      "sha256": "9cec1c329959f71a7ed3f884b5d0decc39f4d8887025eb6f5d4275beeef442a3"
+    },
+    {
+      "id": 7,
+      "file": "home_007.npz",
+      "hours": 8760,
+      "bytes": 17445,
+      "sha256": "965025134c4922ca6bdfc66f0df181e7c82f69607e742f3cb0cf450b83a04d93"
+    },
+    {
+      "id": 8,
+      "file": "home_008.npz",
+      "hours": 8760,
+      "bytes": 20535,
+      "sha256": "05ef3fccd268198075e3167718758461c307b914d23512afab6cb4f2c6b1e6a2"
+    },
+    {
+      "id": 9,
+      "file": "home_009.npz",
+      "hours": 8760,
+      "bytes": 14938,
+      "sha256": "75285c97de8d7a99b507118efe04e6a85980aad764d2f0438ec87e3d088cd4a5"
+    },
+    {
+      "id": 10,
+      "file": "home_010.npz",
+      "hours": 8760,
+      "bytes": 17421,
+      "sha256": "5d53b8b1d23a8595b9e22d9a333384596a1ca41b11b7dcd697df3e6ca5fb2824"
+    },
+    {
+      "id": 11,
+      "file": "home_011.npz",
+      "hours": 8760,
+      "bytes": 19741,
+      "sha256": "f32e16f2f1e9ae461ea04cbfebd48a71270aedb97f2996f26725b985b9c3e403"
+    }
+  ],
+  "prepared_bytes": 180058
+}

@@ -1,0 +1,8 @@
+__pycache__/
+.venv/
+cache/
+*.py[cod]
+*.log
+.env
+.env.*
+results/progress.json
