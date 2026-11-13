@@ -1,0 +1,15 @@
+{
+  "python": "3.12.14",
+  "packages": {
+    "flwr": "1.23.0",
+    "numpy": "2.3.5",
+    "dp-accounting": "0.5.1",
+    "torch": "2.7.1+cu128",
+    "matplotlib": "3.10.7"
+  },
+  "tests_passed": 31,
+  "test_log": "test_results.txt",
+  "public_data_npz_bytes": 363945,
+  "federation_npz_bytes": 531267,
+  "evaluation_design_canonical_sha256": "8f58e7eba91ebf3b6413ad33b483aac8df3839119efb60cd8e6a0b95a92f3be9"
+}

@@ -1,0 +1,15 @@
+{
+  "backend": "numpy",
+  "samples": 253,
+  "batch": 32,
+  "repeats": 5,
+  "epoch_seconds": 0.0004987000720575452,
+  "p95_epoch_seconds": 0.000606579938903451,
+  "epoch_seconds_by_batch": {
+    "16": 0.0010849999962374568,
+    "32": 0.0004987000720575452
+  },
+  "worker_rss_mb": 63.3203125,
+  "workload": "public synthetic tensors; excludes initialization",
+  "tensor_working_set_mb": 0.1208038330078125
+}

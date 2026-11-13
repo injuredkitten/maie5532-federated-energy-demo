@@ -16,7 +16,7 @@ ARCHIVE_SHA256 = '7ec04dbe64700d3e69a6d5b0b501ef1a9f8bd503cfc4a1050630f99c2dbcf7
 MEMBER = 'RawData/2012-2013 Solar home electricity data v2.csv'
 
 
-def build(archive, output, clients=10, days=365):
+def build(archive, output, clients=10, days=365, exclude_ids=None):
     if not 2 <= clients <= 300 or not 60 <= days <= 365:
         raise ValueError('Use 2..300 homes and 60..365 days.')
     archive, output = Path(archive), Path(output)
@@ -49,6 +49,8 @@ def build(archive, output, clients=10, days=365):
                 bucket[key] = a
     chosen = []
     for home in sorted(records):
+        if exclude_ids and home in exclude_ids:
+            continue
         r = records[home]
         if len(r) != days or set(r) != set(range(days)):
             continue
@@ -77,6 +79,9 @@ def build(archive, output, clients=10, days=365):
         'missing': 'Incomplete households excluded; no interpolation or future-data imputation.',
         'clients': entries, 'prepared_bytes': sum(e['bytes'] for e in entries),
     }
+    if exclude_ids:
+        manifest['excluded_household_ids']=sorted(exclude_ids)
+        manifest['selection'] += ' Excludes every household in the supplied federation manifest.'
     (output / 'manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
     print(json.dumps(manifest, indent=2))
     return manifest
@@ -89,6 +94,7 @@ if __name__ == '__main__':
     p.add_argument('--clients', type=int, default=10)
     p.add_argument('--days', type=int, default=365)
     p.add_argument('--output', type=Path, default=ROOT / 'data')
+    p.add_argument('--exclude-manifest',type=Path,help='Exclude these household IDs, e.g. for disjoint public pretraining')
     args = p.parse_args()
     archive = args.archive or ROOT / 'cache' / 'ausgrid.zip'
     if args.download and not archive.exists():
@@ -100,4 +106,5 @@ if __name__ == '__main__':
         archive.write_bytes(payload)
     if not archive.exists():
         p.error('Use --download or --archive PATH; prepared data is already bundled for the default demo.')
-    build(archive, args.output, args.clients, args.days)
+    excluded={c['id'] for c in json.loads(args.exclude_manifest.read_text(encoding='utf-8'))['clients']} if args.exclude_manifest else None
+    build(archive, args.output, args.clients, args.days, excluded)

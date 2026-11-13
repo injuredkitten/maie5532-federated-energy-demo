@@ -74,11 +74,13 @@ class Client:
     boundaries: tuple
 
 
-def load_clients(data_dir):
+def load_clients(data_dir, household_ids=None):
     data_dir = Path(data_dir)
     manifest = json.loads((data_dir / 'manifest.json').read_text(encoding='utf-8'))
     clients = []
     for i, info in enumerate(manifest['clients']):
+        if household_ids is not None and info['id'] not in household_ids:
+            continue
         path = data_dir / info['file']
         if hashlib.sha256(path.read_bytes()).hexdigest() != info['sha256']:
             raise ValueError(f'Data integrity check failed: {path}')

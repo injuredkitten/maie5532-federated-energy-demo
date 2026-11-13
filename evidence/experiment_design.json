@@ -1,0 +1,46 @@
+{
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "rounds": 30,
+  "sizes": [
+    10,
+    30
+  ],
+  "validation_targets": {
+    "10": 0.26,
+    "30": 0.29
+  },
+  "variants": {
+    "plain_uniform": {
+      "secure": false,
+      "policy": "uniform"
+    },
+    "secure_uniform": {
+      "secure": true,
+      "policy": "uniform"
+    },
+    "secure_resource": {
+      "secure": true,
+      "policy": "resource"
+    },
+    "secure_adaptive": {
+      "secure": true,
+      "policy": "resource",
+      "adaptive_epochs": true,
+      "adaptive_batch": true
+    }
+  },
+  "dp_sigma": [
+    2.0,
+    4.0,
+    8.0
+  ],
+  "dp_clip": 0.05,
+  "epsilon_budget": 8.0,
+  "delta": 1e-05,
+  "comparison": "paired public traces; final-round FL model; baselines select validation-best epoch",
+  "limitations": "3 seeds are exploratory; edge time is modeled, not a hardware/network benchmark"
+}

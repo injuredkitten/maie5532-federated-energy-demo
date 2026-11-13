@@ -1,0 +1,39 @@
+{
+  "phase": "validation_only_development",
+  "seed": 101,
+  "rounds": 30,
+  "schedulers": [
+    "uniform",
+    "resource",
+    "cohort_matched_uniform",
+    "cohort"
+  ],
+  "private_candidates": {
+    "cold_dp005": {
+      "clip": 0.05,
+      "initial_model": null
+    },
+    "warm_dp005": {
+      "clip": 0.05,
+      "initial_model": "artifacts/public_init.npz"
+    },
+    "warm_dp001": {
+      "clip": 0.01,
+      "initial_model": "artifacts/public_init.npz"
+    },
+    "warm_dp0003": {
+      "clip": 0.003,
+      "initial_model": "artifacts/public_init.npz"
+    },
+    "warm_dp0001": {
+      "clip": 0.001,
+      "initial_model": "artifacts/public_init.npz"
+    }
+  },
+  "sigma": 4.0,
+  "delta": 1e-05,
+  "epsilon_budget": 8.0,
+  "validation_target": 0.29,
+  "private_metric_scope": "unprotected offline public-data validation; not a deployable DP selection mechanism",
+  "test_access": "none; final held-out evaluation uses fresh seeds 201,202,203 after configuration freeze"
+}

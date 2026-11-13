@@ -1,0 +1,52 @@
+test_accountant_and_budget_stop_before_release (test_engine.EngineTests.test_accountant_and_budget_stop_before_release) ... ok
+test_backprop_against_finite_difference (test_engine.EngineTests.test_backprop_against_finite_difference) ... ok
+test_clipping_and_gaussian_placement (test_engine.EngineTests.test_clipping_and_gaussian_placement) ... ok
+test_common_resource_traces (test_engine.EngineTests.test_common_resource_traces) ... ok
+test_data_target_splits_and_scalers (test_engine.EngineTests.test_data_target_splits_and_scalers) ... ok
+test_equal_household_mean_and_abort (test_engine.EngineTests.test_equal_household_mean_and_abort) ... ok
+test_known_hourly_energy_sum (test_engine.EngineTests.test_known_hourly_energy_sum) ... ok
+test_stale_updates_rejected (test_engine.EngineTests.test_stale_updates_rejected) ... ok
+test_weight_serialization_and_quantization (test_engine.EngineTests.test_weight_serialization_and_quantization) ... ok
+test_cohort_selection_does_not_see_future_dropouts (test_system.ImprovementTests.test_cohort_selection_does_not_see_future_dropouts) ... ok
+test_cohorts_rotate_device_tiers_and_matched_control_matches_size (test_system.ImprovementTests.test_cohorts_rotate_device_tiers_and_matched_control_matches_size) ... ok
+round=1 version=1 survivors=5 committed=True
+round=2 version=2 survivors=5 committed=True
+round=3 version=3 survivors=5 committed=True
+round=1 version=1 survivors=5 committed=True
+round=2 version=2 survivors=5 committed=True
+round=3 version=3 survivors=5 committed=True
+test_public_initialization_is_not_reapplied_on_resume (test_system.ImprovementTests.test_public_initialization_is_not_reapplied_on_resume) ... ok
+test_public_initializer_disjointness_and_integrity (test_system.ImprovementTests.test_public_initializer_disjointness_and_integrity) ... ok
+test_sparse_tier_fills_to_secure_minimum (test_system.ImprovementTests.test_sparse_tier_fills_to_secure_minimum) ... ok
+round=1 version=1 survivors=5 committed=True
+test_validation_only_run_does_not_touch_test_split (test_system.ImprovementTests.test_validation_only_run_does_not_touch_test_split) ... ok
+test_aborted_secure_round_does_not_spend_budget (test_system.PrivacyAndStateTests.test_aborted_secure_round_does_not_spend_budget) ... ERROR :     Insufficient available nodes.
+round=1 version=0 survivors=0 committed=False
+ok
+test_accountant_monotone_and_below_basic_rdp_bound (test_system.PrivacyAndStateTests.test_accountant_monotone_and_below_basic_rdp_bound) ... ok
+round=1 version=1 survivors=5 committed=True
+test_budget_stop_hides_metrics_and_counts_only_releases (test_system.PrivacyAndStateTests.test_budget_stop_hides_metrics_and_counts_only_releases) ... ok
+test_cpu_reference_memory_excludes_infeasible_clients (test_system.PrivacyAndStateTests.test_cpu_reference_memory_excludes_infeasible_clients) ... ok
+test_monitor_updates_status_but_does_not_serve_checkpoint (test_system.PrivacyAndStateTests.test_monitor_updates_status_but_does_not_serve_checkpoint) ... ok
+test_output_lock_prevents_two_controllers (test_system.PrivacyAndStateTests.test_output_lock_prevents_two_controllers) ... ok
+test_private_evaluation_is_rejected_before_network (test_system.PrivacyAndStateTests.test_private_evaluation_is_rejected_before_network) ... ok
+test_quantization_bound_and_noise_not_seeded (test_system.PrivacyAndStateTests.test_quantization_bound_and_noise_not_seeded) ... ok
+round=1 version=1 survivors=5 committed=True
+round=2 version=2 survivors=5 committed=True
+round=3 version=3 survivors=5 committed=True
+round=1 version=1 survivors=5 committed=True
+round=2 version=2 survivors=5 committed=True
+round=3 version=3 survivors=5 committed=True
+test_round_boundary_resume_matches_uninterrupted_model (test_system.PrivacyAndStateTests.test_round_boundary_resume_matches_uninterrupted_model) ... ok
+test_uncommitted_reservation_is_charged_after_crash (test_system.PrivacyAndStateTests.test_uncommitted_reservation_is_charged_after_crash) ... ok
+test_01_secure_sum_matches_plain_clipped_updates_and_wire_is_masked (test_system.ProtocolTests.test_01_secure_sum_matches_plain_clipped_updates_and_wire_is_masked) ... ok
+test_02_dropped_client_after_key_sharing_is_recovered (test_system.ProtocolTests.test_02_dropped_client_after_key_sharing_is_recovered) ... ok
+test_03_insufficient_shares_abort_without_aggregate (test_system.ProtocolTests.test_03_insufficient_shares_abort_without_aggregate) ... ok
+test_04_drop_during_unmask_preserves_already_uploaded_contribution (test_system.ProtocolTests.test_04_drop_during_unmask_preserves_already_uploaded_contribution) ... ok
+test_05_replay_is_rejected_locally (test_system.ProtocolTests.test_05_replay_is_rejected_locally) ... ok
+test_06_small_clip_secure_aggregate_retains_precision (test_system.ProtocolTests.test_06_small_clip_secure_aggregate_retains_precision) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 16.121s
+
+OK

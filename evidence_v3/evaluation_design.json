@@ -1,0 +1,66 @@
+{
+  "phase": "frozen_evaluation",
+  "seeds": [
+    201,
+    202,
+    203
+  ],
+  "rounds": 30,
+  "sizes": [
+    10,
+    30
+  ],
+  "validation_targets": {
+    "10": 0.26,
+    "30": 0.29
+  },
+  "schedulers": {
+    "uniform": {
+      "policy": "uniform"
+    },
+    "legacy_resource": {
+      "policy": "resource"
+    },
+    "matched_uniform": {
+      "policy": "cohort_matched_uniform"
+    },
+    "cohort": {
+      "policy": "cohort"
+    }
+  },
+  "privacy_variants": {
+    "cold_dp005": {
+      "policy": "resource",
+      "sigma": 4.0,
+      "clip": 0.05
+    },
+    "cold_dp0001": {
+      "policy": "resource",
+      "sigma": 4.0,
+      "clip": 0.001
+    },
+    "warm_no_dp0001": {
+      "policy": "resource",
+      "clip": 0.001,
+      "initial_model": "artifacts/public_init.npz"
+    },
+    "warm_dp0001": {
+      "policy": "resource",
+      "sigma": 4.0,
+      "clip": 0.001,
+      "initial_model": "artifacts/public_init.npz"
+    },
+    "warm_cohort_dp0001": {
+      "policy": "cohort",
+      "sigma": 4.0,
+      "clip": 0.001,
+      "initial_model": "artifacts/public_init.npz"
+    }
+  },
+  "chosen_from": "validation-only development seed 101; confirmation seed 102",
+  "selection": "cohort grouping fixed before development; C=.001 selected by validation MAE",
+  "privacy_comparison": "sigma=4, delta=1e-5, epsilon budget=8; actual releases reported; no sampling amplification",
+  "test_policy": "Evaluate after settings freeze; no test-driven changes or seed exclusion",
+  "public_model_sha256": "0b6812204ef364c73d87a98ff1a4318adffa8f755758cd2645232e973a8f99ed",
+  "dp_scope": "All data are public benchmark data. Offline validation/test utility is not a DP output."
+}

@@ -1,0 +1,28 @@
+{
+  "status": "completed",
+  "round": 3,
+  "rounds": 3,
+  "version": 3,
+  "households": 30,
+  "backend": "cuda",
+  "policy": "resource",
+  "secure": true,
+  "private": true,
+  "initialization": "disjoint_public",
+  "epsilon": 1.8555106367839715,
+  "delta": 1e-05,
+  "privacy_releases": 3,
+  "epsilon_budget": 8.0,
+  "simulated_seconds": 3.17335480028823,
+  "wire_bytes": 1398650,
+  "target_seconds": null,
+  "fairness": {
+    "coverage": 0.5666666666666667,
+    "jain_index": 0.4764705882352941,
+    "minimum_contributions": 0,
+    "maximum_contributions": 3
+  },
+  "updated_unix": 1794579159.3037856,
+  "scope": "Same-host Flower process simulation; edge timing is modeled; metrics use public Ausgrid data.",
+  "resume_check": "stopped after round 1, resumed to round 3 using the public initializer"
+}
