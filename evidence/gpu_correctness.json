@@ -1,0 +1,10 @@
+{
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+  "torch": "2.7.1+cu128",
+  "cuda_available": true,
+  "cpu_gpu_max_abs_difference": 1.4901161193847656e-08,
+  "same_seed_cuda_repeat_exact": true,
+  "atol": 2e-06,
+  "rtol": 2e-05,
+  "scope": "public synthetic tensors; SGD compatibility and local determinism"
+}

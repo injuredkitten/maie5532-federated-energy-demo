@@ -1,0 +1,229 @@
+{
+  "dataset": "Ausgrid Solar Home Electricity Data 2012-2013",
+  "kind": "real_public_data",
+  "source": "https://www.ausgrid.com.au/Industry/Our-Research/Data-to-share/Solar-home-electricity-data",
+  "mirror": "https://raw.githubusercontent.com/rockey-abhishek/Ausgrid-Dataset/main/Data.zip",
+  "archive_sha256": "7ec04dbe64700d3e69a6d5b0b501ef1a9f8bd503cfc4a1050630f99c2dbcf7b8",
+  "archive_bytes": 14618329,
+  "csv_member": "RawData/2012-2013 Solar home electricity data v2.csv",
+  "target": "GC only: general consumption; excludes CL and GG",
+  "unit": "kWh per hour",
+  "start": "2012-07-01T00:00:00",
+  "end_exclusive": "2013-07-01T00:00:00",
+  "time_convention": "Source local-clock 48-slot days; adjacent half-hour ENERGY values summed. Hour labels are interval starts; no UTC/DST conversion.",
+  "selection": "First numerically ordered complete, finite, nonnegative GC households with blank (actual) Row Quality; not random or representative.",
+  "missing": "Incomplete households excluded; no interpolation or future-data imputation.",
+  "clients": [
+    {
+      "id": 1,
+      "file": "home_001.npz",
+      "hours": 8760,
+      "bytes": 19455,
+      "sha256": "275fb1f37eb514078f222bdefc269a932345802b85795775da7919adef612686"
+    },
+    {
+      "id": 3,
+      "file": "home_003.npz",
+      "hours": 8760,
+      "bytes": 15376,
+      "sha256": "237f0f255ed1b6f80c2b734f446d97d346e405855573d6936269d268950f74a7"
+    },
+    {
+      "id": 4,
+      "file": "home_004.npz",
+      "hours": 8760,
+      "bytes": 16911,
+      "sha256": "9b608dfb86ddf98d4ca17292eb15da38af4b03c6c2a51f62de380284c270792d"
+    },
+    {
+      "id": 5,
+      "file": "home_005.npz",
+      "hours": 8760,
+      "bytes": 18018,
+      "sha256": "ffd480ab0aba1a033bee8fc6d0a2aa8fd66af1b9bfb1be3ca8319a544d970061"
+    },
+    {
+      "id": 6,
+      "file": "home_006.npz",
+      "hours": 8760,
+      "bytes": 20218,
+      "sha256": "9cec1c329959f71a7ed3f884b5d0decc39f4d8887025eb6f5d4275beeef442a3"
+    },
+    {
+      "id": 7,
+      "file": "home_007.npz",
+      "hours": 8760,
+      "bytes": 17445,
+      "sha256": "965025134c4922ca6bdfc66f0df181e7c82f69607e742f3cb0cf450b83a04d93"
+    },
+    {
+      "id": 8,
+      "file": "home_008.npz",
+      "hours": 8760,
+      "bytes": 20535,
+      "sha256": "05ef3fccd268198075e3167718758461c307b914d23512afab6cb4f2c6b1e6a2"
+    },
+    {
+      "id": 9,
+      "file": "home_009.npz",
+      "hours": 8760,
+      "bytes": 14938,
+      "sha256": "75285c97de8d7a99b507118efe04e6a85980aad764d2f0438ec87e3d088cd4a5"
+    },
+    {
+      "id": 10,
+      "file": "home_010.npz",
+      "hours": 8760,
+      "bytes": 17421,
+      "sha256": "5d53b8b1d23a8595b9e22d9a333384596a1ca41b11b7dcd697df3e6ca5fb2824"
+    },
+    {
+      "id": 11,
+      "file": "home_011.npz",
+      "hours": 8760,
+      "bytes": 19741,
+      "sha256": "f32e16f2f1e9ae461ea04cbfebd48a71270aedb97f2996f26725b985b9c3e403"
+    },
+    {
+      "id": 12,
+      "file": "home_012.npz",
+      "hours": 8760,
+      "bytes": 18571,
+      "sha256": "3444df4edd875e3053b9fbb0b64cd9d7ebb640436cee754b50776db9beb7ccd7"
+    },
+    {
+      "id": 13,
+      "file": "home_013.npz",
+      "hours": 8760,
+      "bytes": 18726,
+      "sha256": "255778986abfec0ab2bb93c397112fb98c964f484c0b5f87ecd959643ff3ab0b"
+    },
+    {
+      "id": 14,
+      "file": "home_014.npz",
+      "hours": 8760,
+      "bytes": 18837,
+      "sha256": "78bf1a79370de0bbd536ed716355eaf1a4d33663c4c1ce599d803ac40356edc2"
+    },
+    {
+      "id": 15,
+      "file": "home_015.npz",
+      "hours": 8760,
+      "bytes": 16319,
+      "sha256": "ecf25843bf94c6c6c07b38b7a7036e9fa89c0770b8940ec5498d8428275665f7"
+    },
+    {
+      "id": 16,
+      "file": "home_016.npz",
+      "hours": 8760,
+      "bytes": 19984,
+      "sha256": "3df22fcc883e60bdc1b936c30921100bfdcea485b61372c608182f129a724025"
+    },
+    {
+      "id": 18,
+      "file": "home_018.npz",
+      "hours": 8760,
+      "bytes": 18141,
+      "sha256": "bca4b15767af5648f950ac35d3e6e923b88573c89e81a15dd30e9b80079348eb"
+    },
+    {
+      "id": 19,
+      "file": "home_019.npz",
+      "hours": 8760,
+      "bytes": 12727,
+      "sha256": "dc8c9f7653bdd435752a37bbb4b7b1e469c4b6963e1efb39c16b63a4e7967873"
+    },
+    {
+      "id": 20,
+      "file": "home_020.npz",
+      "hours": 8760,
+      "bytes": 14910,
+      "sha256": "63c6e545639ee6e9666d3693089a0cf89d056b8155b4ca60a50c95ed96b7e465"
+    },
+    {
+      "id": 21,
+      "file": "home_021.npz",
+      "hours": 8760,
+      "bytes": 20922,
+      "sha256": "1a312fa000482e9a73cef75812460ae64b8112c2c2939ea4b4a4e19eb76edc8e"
+    },
+    {
+      "id": 22,
+      "file": "home_022.npz",
+      "hours": 8760,
+      "bytes": 17687,
+      "sha256": "14fa72c985891cb05b4c101bce86f594841bf3954b733caea02c9c47d6ede407"
+    },
+    {
+      "id": 24,
+      "file": "home_024.npz",
+      "hours": 8760,
+      "bytes": 18889,
+      "sha256": "c5a81390378ba5f1acc3c4132cd127a23aa40164fe977203ca3a3a173ec6fe81"
+    },
+    {
+      "id": 25,
+      "file": "home_025.npz",
+      "hours": 8760,
+      "bytes": 14534,
+      "sha256": "4b2a80c962f6ccd9a91ee6a4e1cc545961df98ee40dd96653c0f6703504bf723"
+    },
+    {
+      "id": 26,
+      "file": "home_026.npz",
+      "hours": 8760,
+      "bytes": 15176,
+      "sha256": "f53269149956cfe25010c29e90d08eec09dd459272350c946bab82102f03f22c"
+    },
+    {
+      "id": 27,
+      "file": "home_027.npz",
+      "hours": 8760,
+      "bytes": 19311,
+      "sha256": "87f01079f40ee3b117a4d41fd9ee2e3253e467ed7990842787149f109f1ca1c3"
+    },
+    {
+      "id": 28,
+      "file": "home_028.npz",
+      "hours": 8760,
+      "bytes": 13913,
+      "sha256": "fb804238ffce0d1de7b762057ede0c514046ff0a0bde2c6fc6fe19a388bf5be1"
+    },
+    {
+      "id": 29,
+      "file": "home_029.npz",
+      "hours": 8760,
+      "bytes": 19329,
+      "sha256": "a972713ec6bb3a8808f77ce041a5cce745ce23fbd63535c7d0c580d1411b71e1"
+    },
+    {
+      "id": 30,
+      "file": "home_030.npz",
+      "hours": 8760,
+      "bytes": 16284,
+      "sha256": "a997fcd25351db1b16a84a04b8a770bbff5d7ecf1253cde27af1044d00721f3e"
+    },
+    {
+      "id": 31,
+      "file": "home_031.npz",
+      "hours": 8760,
+      "bytes": 17704,
+      "sha256": "ebc771ed9a8e621fb14d16b57ad1e2138497fcfec6aebeb6df47980b11ba005d"
+    },
+    {
+      "id": 32,
+      "file": "home_032.npz",
+      "hours": 8760,
+      "bytes": 18869,
+      "sha256": "7ed199dd917c3f7bca377558a04c448549d5b80d56fa226f1781e4ff31dcf95b"
+    },
+    {
+      "id": 33,
+      "file": "home_033.npz",
+      "hours": 8760,
+      "bytes": 20376,
+      "sha256": "9bc4488a61879e9da7873bd27abfe33bf67f67499abca0565dd168532d544c31"
+    }
+  ],
+  "prepared_bytes": 531267
+}

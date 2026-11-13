@@ -6,3 +6,8 @@ cache/
 .env
 .env.*
 results/progress.json
+system_runs/
+benchmark_runs/
+.pytest_cache/
+*_output.txt
+repeat_evidence/

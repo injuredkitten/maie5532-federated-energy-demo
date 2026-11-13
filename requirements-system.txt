@@ -1,0 +1,8 @@
+-r requirements.txt
+flwr==1.23.0
+grpcio==1.71.2
+grpcio-health-checking==1.62.3
+protobuf==4.25.9
+cryptography==44.0.3
+dp-accounting==0.5.1
+psutil==7.1.3

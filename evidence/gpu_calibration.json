@@ -1,0 +1,18 @@
+{
+  "backend": "cuda",
+  "samples": 253,
+  "batch": 32,
+  "repeats": 5,
+  "epoch_seconds": 0.01323230005800724,
+  "p95_epoch_seconds": 0.013919480028562248,
+  "epoch_seconds_by_batch": {
+    "16": 0.026195699931122363,
+    "32": 0.01323230005800724
+  },
+  "worker_rss_mb": 1135.1796875,
+  "workload": "public synthetic tensors; excludes initialization",
+  "tensor_working_set_mb": 0.1208038330078125,
+  "torch": "2.7.1+cu128",
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+  "gpu_peak_allocated_mb": 64.11474609375
+}
