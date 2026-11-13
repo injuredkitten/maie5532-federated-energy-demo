@@ -3,6 +3,10 @@ param(
     [string]$Output = 'system_runs/demo',
     [int]$Rounds = 30,
     [double]$Sigma = 0,
+    [double]$Clip = 0.5,
+    [ValidateSet('uniform','resource','cohort','cohort_matched_uniform')][string]$Policy = 'cohort',
+    [string]$InitialModel = '',
+    [switch]$Private,
     [int]$MonitorPort = 8767,
     [switch]$Resume,
     [switch]$Open
@@ -13,8 +17,15 @@ $python = Join-Path $PSScriptRoot '.venv/Scripts/python.exe'
 if (-not (Test-Path -LiteralPath $python)) {
     throw 'Create .venv and install requirements-system.txt first (see README).'
 }
+if ($Private) {
+    if (-not $PSBoundParameters.ContainsKey('Sigma')) { $Sigma = 4 }
+    if (-not $PSBoundParameters.ContainsKey('Clip')) { $Clip = 0.001 }
+    if (-not $PSBoundParameters.ContainsKey('Policy')) { $Policy = 'resource' }
+    if (-not $InitialModel) { $InitialModel = 'artifacts/public_init.npz' }
+}
 $runArgs = @('-m','energy_fl.runner','--backend',$Backend,'--workers','1',
-             '--rounds',"$Rounds",'--output',$Output,'--sigma',"$Sigma")
+             '--rounds',"$Rounds",'--output',$Output,'--sigma',"$Sigma",'--clip',"$Clip",'--policy',$Policy)
+if ($InitialModel) { $runArgs += @('--initial-model',$InitialModel) }
 if ($Resume) { $runArgs += '--resume' }
 $monitor = $null
 if ($Open) {

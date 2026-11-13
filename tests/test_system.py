@@ -39,12 +39,12 @@ class ProtocolTests(unittest.TestCase):
     @classmethod
     def tearDownClass(cls): cls.grid.close()
 
-    def expected(self, round_number, selected):
+    def expected(self, round_number, selected, clip=.5):
         updates = []
         for i in selected:
             client = EnergyClient(Context(1,i+1,{'household':self.ids[i]},RecordDict(),{}), self.cfg, {})
             vector, _, _ = client.fit([self.base], {'round':round_number,'version':0,
-                'digest':model_digest(self.base),'epochs':2,'batch':32,'lr':.03,'clip':.5})
+                'digest':model_digest(self.base),'epochs':2,'batch':32,'lr':.03,'clip':clip})
             updates.append(vector[0])
         return np.mean(updates, axis=0)
 
@@ -90,6 +90,81 @@ class ProtocolTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'Stale/replayed'): client.fit([self.base],cfg)
         with self.assertRaisesRegex(ValueError,'digest'):
             client.fit([self.base],{**cfg,'round':2,'digest':'wrong'})
+
+    def test_06_small_clip_secure_aggregate_retains_precision(self):
+        cfg={**self.cfg,'clip':.001}
+        average,survivors=aggregate_round(self.grid,self.base,list(range(5)),self.epochs,5,0,cfg)
+        np.testing.assert_allclose(average,self.expected(5,range(5),.001),atol=.002/2**22,rtol=0)
+        self.assertLessEqual(np.linalg.norm(average),effective_bound(.001,PARAMETERS))
+
+
+class ImprovementTests(unittest.TestCase):
+    def test_cohorts_rotate_device_tiers_and_matched_control_matches_size(self):
+        from energy_fl.scheduler import trace
+        counts=[0]*30;last=[0]*30
+        public=(np.ones(30,dtype=bool),np.zeros(30,dtype=bool),np.ones(30))
+        with patch('energy_fl.scheduler.trace',return_value=public):
+            for number,tier in ((1,2),(2,1),(3,0)):
+                scheduled=plan(number,list(range(30)),counts,last,config(policy='cohort',clients_per_round=10),CAL)
+                control=plan(number,list(range(30)),counts,last,config(policy='cohort_matched_uniform',clients_per_round=10),CAL)
+                self.assertEqual(len(scheduled['selected']),10)
+                self.assertEqual(len(control['selected']),len(scheduled['selected']))
+                self.assertEqual({i%3 for i in scheduled['selected']},{tier})
+
+    def test_cohort_selection_does_not_see_future_dropouts(self):
+        a=plan(1,list(range(30)),[0]*30,[0]*30,config(policy='cohort',dropout=0),CAL)
+        b=plan(1,list(range(30)),[0]*30,[0]*30,config(policy='cohort',dropout=1),CAL)
+        self.assertEqual(a['selected'],b['selected'])
+        self.assertNotEqual(a['failed'],b['failed'])
+
+    def test_sparse_tier_fills_to_secure_minimum(self):
+        online=np.array([True,True,True,True,False,False])
+        with patch('energy_fl.scheduler.trace',return_value=(online,np.zeros(6,dtype=bool),np.ones(6))):
+            scheduled=plan(1,list(range(6)),[0]*6,[0]*6,config(policy='cohort'),CAL)
+        self.assertEqual(len(scheduled['selected']),3)
+        self.assertEqual(len(set(scheduled['selected'])),3)
+        self.assertTrue(all(online[i] for i in scheduled['selected']))
+
+    def test_public_initializer_disjointness_and_integrity(self):
+        from energy_fl.initialization import load_public_model
+        import shutil
+        manifest=json.loads((ROOT/'data30/manifest.json').read_text(encoding='utf-8'))
+        vector,info=load_public_model(ROOT/'artifacts/public_init.npz',manifest)
+        self.assertEqual(vector.shape,(PARAMETERS,))
+        self.assertFalse(set(info['household_ids'])&{c['id'] for c in manifest['clients']})
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'init.npz'
+            shutil.copyfile(ROOT/'artifacts/public_init.npz',path)
+            path.with_suffix('.json').write_text(json.dumps({**info,'household_ids':[1]}),encoding='utf-8')
+            with self.assertRaisesRegex(ValueError,'overlap'): load_public_model(path,manifest)
+            path.with_suffix('.json').write_text(json.dumps(info),encoding='utf-8')
+            path.write_bytes(path.read_bytes()+b'tampered')
+            with self.assertRaisesRegex(ValueError,'checksum'): load_public_model(path,manifest)
+
+    def test_validation_only_run_does_not_touch_test_split(self):
+        original=evaluate;seen=[]
+        def validation_only(grid,weights,split):
+            self.assertEqual(split,'val');seen.append(split)
+            return original(grid,weights,split)
+        with tempfile.TemporaryDirectory() as folder,patch('energy_fl.protocol.evaluate',side_effect=validation_only):
+            summary=run(config(rounds=1,evaluation='validation',
+                               initial_model=str(ROOT/'artifacts/public_init.npz')),
+                        folder,calibration=CAL)
+        self.assertTrue(seen);self.assertNotIn('test',summary)
+        self.assertEqual(summary['initialization'],'disjoint_public')
+
+    def test_public_initialization_is_not_reapplied_on_resume(self):
+        cfg=config(initial_model=str(ROOT/'artifacts/public_init.npz'),clip=.001,evaluation='none')
+        with tempfile.TemporaryDirectory() as folder:
+            direct,split=Path(folder)/'direct',Path(folder)/'split'
+            run(cfg,direct,calibration=CAL)
+            run(cfg,split,stop_after=1,calibration=CAL)
+            resumed=run(cfg,split,resume=True,calibration=CAL)
+            with np.load(direct/'model_fp32.npz') as a,np.load(split/'model_fp32.npz') as b:
+                np.testing.assert_array_equal(a['weights'],b['weights'])
+            self.assertEqual(resumed['version'],3)
+            with self.assertRaises(ValueError):
+                run({**cfg,'initial_model':None},split,resume=True,calibration=CAL)
 
 
 class PrivacyAndStateTests(unittest.TestCase):

@@ -20,7 +20,7 @@ DEFAULTS = dict(rounds=30, clients_per_round=10, epochs=2, batch=32, lr=.03,
                 seed=42, policy='resource', adaptive_epochs=False, adaptive_batch=False, dropout=.08,
                 deadline=1., clip=.5, sigma=0., delta=1e-5, epsilon_budget=8.,
                 threshold=.67, secure=True, backend='numpy', workers=2,
-                validation_target=.29)
+                validation_target=.29, evaluation='full', initial_model=None)
 
 
 @contextmanager
@@ -43,6 +43,10 @@ def exclusive_run(folder):
 
 
 def validate(config):
+    if config['policy'] not in ('uniform','resource','cohort','cohort_matched_uniform'):
+        raise ValueError('Unknown scheduling policy')
+    if config['evaluation'] not in ('full','validation','none'):
+        raise ValueError('Unknown evaluation mode')
     for key in ('rounds', 'clients_per_round', 'epochs', 'batch', 'workers'):
         if not isinstance(config[key], int) or config[key] < 1: raise ValueError(f'Invalid {key}')
     if config['clients_per_round'] < 3 or config['clients_per_round'] > 100:
@@ -91,12 +95,18 @@ def _run(config, output, resume, stop_after, calibration):
             calibration = json.loads(calibration_file.read_text(encoding='utf-8'))
     if calibration['backend'] != 'numpy':
         raise ValueError('Scheduling uses an isolated NumPy CPU reference, even for GPU execution')
-    public_config = {k: v for k, v in config.items() if k != 'data'}
+    initial=flatten(initial_model(config['seed']))
+    initializer=None
+    if config['initial_model']:
+        from .initialization import load_public_model
+        initial,initializer=load_public_model(config['initial_model'],manifest)
+    public_config = {k: v for k, v in config.items() if k not in ('data','initial_model')}
+    public_config['initial_model_sha256']=initializer['model_sha256'] if initializer else None
     run_hash = fingerprint({**public_config, 'calibration': calibration}, manifest)
     if resume:
         weights, state = store.load(run_hash)
     else:
-        weights = flatten(initial_model(config['seed']))
+        weights = initial
         state = {'fingerprint': run_hash, 'round': 0, 'version': 0, 'privacy_releases': 0,
                  'counts': [0]*len(ids), 'last_seen': [0]*len(ids), 'history': [],
                  'simulated_seconds': 0., 'wire_bytes': 0, 'target_seconds': None}
@@ -109,6 +119,7 @@ def _run(config, output, resume, stop_after, calibration):
         summary = {'status': status, 'round': state['round'], 'rounds': config['rounds'],
                    'version': state['version'], 'households': len(ids), 'backend': config['backend'],
                    'policy': config['policy'], 'secure': config['secure'], 'private': config['sigma'] > 0,
+                   'initialization': 'disjoint_public' if initializer else 'random',
                    'epsilon': spent(state['privacy_releases'], config['sigma'], config['delta']) if config['sigma'] else None,
                    'delta': config['delta'] if config['sigma'] else None,
                    'privacy_releases': state['privacy_releases'], 'epsilon_budget': config['epsilon_budget'],
@@ -164,7 +175,7 @@ def _run(config, output, resume, stop_after, calibration):
                           'wall_seconds': elapsed if not config['sigma'] else None,
                           'training_wire_bytes': sum(s['up_bytes']+s['down_bytes'] for s in training_stats),
                           'stages': training_stats, 'validation': None}
-                if not config['sigma']:
+                if not config['sigma'] and config['evaluation']!='none':
                     record['validation'] = evaluate(grid, weights, 'val')
                     if state['target_seconds'] is None and record['validation']['mae'] <= config['validation_target']:
                         state['target_seconds'] = state['simulated_seconds']
@@ -175,7 +186,7 @@ def _run(config, output, resume, stop_after, calibration):
                 publish('running')
                 print(f"round={number} version={state['version']} survivors={len(survivors)} committed={committed}", flush=True)
             extra = {}
-            if not config['sigma']:
+            if not config['sigma'] and config['evaluation']=='full':
                 grid.stats = []
                 extra['test'] = evaluate(grid, weights, 'test')
                 # This diagnostic is not part of the round state or time-to-target.
@@ -203,7 +214,9 @@ def main():
         parser.add_argument('--'+key.replace('_','-'), type=int, default=DEFAULTS[key])
     for key in ('lr','dropout','deadline','clip','sigma','delta','epsilon_budget','threshold','validation_target'):
         parser.add_argument('--'+key.replace('_','-'), type=float, default=DEFAULTS[key])
-    parser.add_argument('--policy', choices=['uniform','resource'], default='resource')
+    parser.add_argument('--policy', choices=['uniform','resource','cohort','cohort_matched_uniform'], default='resource')
+    parser.add_argument('--evaluation',choices=['full','validation','none'],default='full')
+    parser.add_argument('--initial-model',help='NPZ public model with matching provenance JSON; household sets must be disjoint')
     parser.add_argument('--backend', choices=['numpy','torch-cpu','cuda'], default='numpy')
     parser.add_argument('--adaptive-epochs', action='store_true')
     parser.add_argument('--adaptive-batch', action='store_true')

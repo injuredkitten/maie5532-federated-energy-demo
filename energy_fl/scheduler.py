@@ -25,7 +25,19 @@ def plan(round_number, ids, counts, last_seen, config, calibration):
     available=np.flatnonzero(online & feasible).tolist()
     k=min(config['clients_per_round'],len(available))
     rng=np.random.default_rng(np.random.SeedSequence([config['seed'],round_number,772]))
-    if config['policy']=='uniform':
+    if config['policy'] in ('cohort','cohort_matched_uniform'):
+        # Rotate high/medium/low cohorts. A slow link then delays its own cohort,
+        # rather than every round. Round/seed and public device metadata only.
+        tier=2-((round_number-1)%3)
+        cohort=sorted((i for i in available if i%3==tier),
+                      key=lambda i:(counts[i],last_seen[i],i))[:k]
+        # At least three clients for SecAgg+. Fill only when the tier is sparse.
+        if len(cohort)<min(3,k):
+            rest=sorted((i for i in available if i not in cohort),
+                        key=lambda i:(abs(i%3-tier),counts[i],costs[i],i))
+            cohort += rest[:min(3,k)-len(cohort)]
+        selected=cohort if config['policy']=='cohort' else rng.permutation(available)[:len(cohort)].tolist()
+    elif config['policy']=='uniform':
         selected=rng.permutation(available)[:k].tolist()
     else:
         # Fair slots: prioritize longest since success, then least successful.

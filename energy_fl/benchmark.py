@@ -29,7 +29,12 @@ def execute(folder, cfg, calibration):
             for item in manifest['clients']:
                 if hashlib.sha256((Path(cfg['data'])/item['file']).read_bytes()).hexdigest()!=item['sha256']:
                     raise ValueError('Cached run dataset checksum mismatch')
-            public_config={k:v for k,v in {**DEFAULTS,**cfg}.items() if k!='data'}
+            public_config={k:v for k,v in {**DEFAULTS,**cfg}.items() if k not in ('data','initial_model')}
+            public_config['initial_model_sha256']=None
+            if cfg.get('initial_model'):
+                from .initialization import load_public_model
+                _,info=load_public_model(cfg['initial_model'],manifest)
+                public_config['initial_model_sha256']=info['model_sha256']
             expected=fingerprint({**public_config,'calibration':calibration},manifest)
             RunStore(folder).load(expected)  # Never relabel cached runs with changed settings.
             return saved
