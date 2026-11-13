@@ -135,6 +135,11 @@ def figures(lookup,root):
     ax.set_axisbelow(True);ax.grid(axis='y',alpha=.2)
     fig.suptitle('Mean ± sample SD · seeds 201/202/203 (public-only: one fixed model)',fontsize=11)
     fig.savefig(root/'privacy_utility.png');fig.savefig(root/'privacy_utility.svg');plt.close(fig)
+    # Matplotlib emits trailing spaces inside SVG paths; normalize for clean diffs.
+    for name in ('scheduling.svg','privacy_utility.svg'):
+        path=root/name
+        path.write_text('\n'.join(line.rstrip() for line in path.read_text(encoding='utf-8').splitlines())+'\n',
+                        encoding='utf-8',newline='\n')
 
 
 if __name__=='__main__': main()
